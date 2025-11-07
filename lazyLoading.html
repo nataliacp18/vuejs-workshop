@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 3 Lazy Loading Demo</title>
+  <script src="https://unpkg.com/vue@3.4.0"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 60px;
+    }
+    .box {
+      border: 2px solid #ccc;
+      padding: 20px;
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Vue 3 Lazy Loading Example</h1>
+    <button @click="show = !show">
+      {{ show ? 'Hide' : 'Show' }} Lazy Component
+    </button>
+
+    <!-- Component will appear here -->
+    <div v-if="show" class="box">
+      <lazy-box />
+    </div>
+  </div>
+
+  <script>
+    const { createApp, defineAsyncComponent, ref } = Vue;
+
+    // Simulate a lazy-loaded component with a delay
+    const LazyBox = defineAsyncComponent(() =>
+      new Promise((resolve) => {
+        console.log('Loading component...');
+        setTimeout(() => {
+          console.log('Component loaded!');
+          resolve({
+            template: `<div><h2>🎉 I'm loaded lazily!</h2><p>This component was fetched asynchronously.</p></div>`
+          });
+        }, 1500); // simulate network delay
+      })
+    );
+
+    const app = createApp({
+      components: { 'lazy-box': LazyBox },
+      setup() {
+        const show = ref(false);
+        return { show };
+      }
+    });
+
+    app.mount('#app');
+  </script>
+</body>
+
+</html>
