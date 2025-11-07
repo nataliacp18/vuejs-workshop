@@ -2,6 +2,6 @@
 Vuejs concepts clarification by workshops
 
 ## View extensions
-Vue official
-Live Server Extension
+1. Vue official
+2. Live Server Extension
 
