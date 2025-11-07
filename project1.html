@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 3.4 Template</title>
+  <link rel="stylesheet" href="https://unpkg.com/normalize.css/normalize.css">
+  <style type="text/css">
+    body {
+      font-family: monospace;
+      padding: 20px;
+      font-size: 2em;
+    }
+  </style>
+  <script src="https://unpkg.com/vue@3.4.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      {{simple_text}}
+    </div>
+    <div class="mt-4 bg-green-50 p-4 flex flex-row justify-between">
+        <div class="mb-2">
+            <p class="text-[gray]" v-if="initial_message">A: {{initial_message}}</p>
+            <p class="text-[#4b4bb9]" v-if="message_back"> B: {{message_back}}</p>
+        </div>
+      <span class="text-[#bc0e0e]" v-if="rude==='Rude'">{{rude}}</span>
+      <span class="text-[green]" v-if="rude==='Polite'">{{rude}}</span>
+    </div>
+  </div>
+  <script>
+    const { createApp, ref, computed } = Vue;
+    const App = {
+      setup() {
+        let simple_text = 'Simple conversation'
+        let initial_message = ref('Hi There!')
+        let message_back = ref (null)
+        let rude = computed(
+            ()=> {
+                return message_back.value ? 'Polite' : 'Rude'
+            }
+        )
+        // setTimeout(()=> {
+        //     console.log("Changing message...")
+        //     simple_text.value = "Simple conversation started"
+        // }, 2000)
+
+        setTimeout(()=> {
+            console.log("Changing message ref...")
+            message_back.value = "Hello!"
+            initial_message.value = ""
+        }, 5000)
+
+        setTimeout(()=> {
+            initial_message.value = "Bye"
+            message_back.value = "Bye"
+        }, 8000)
+
+        return {
+            simple_text, initial_message, message_back, rude
+        }
+      },
+    };
+
+    createApp(App).mount('#app');
+  </script>
+</body>
+
+</html>

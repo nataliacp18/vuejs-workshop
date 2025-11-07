@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vue 3 Workshop: data, computed, and watch</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 30px; background: #f7f7f7; }
+    .app { background: white; padding: 20px; border-radius: 8px; width: 300px; margin: auto; text-align: center; }
+    button { padding: 8px 16px; margin: 5px; }
+    input { padding: 5px; width: 90%; margin-bottom: 10px; }
+    .message { margin-top: 10px; font-weight: bold; color: #555; }
+  </style>
+</head>
+<body>
+  <div id="app" class="app">
+    <h2>Vue 3 Workshop</h2>
+
+    <label>
+      Enter your name:
+      <input v-model="name" placeholder="Type your name" />
+    </label>
+
+    <p>Hello, <strong>{{ name || 'friend' }}</strong>!</p>
+
+    <p>Count: {{ count }}</p>
+    <button @click="count++">➕ Increment</button>
+    <button @click="count--">➖ Decrement</button>
+
+    <p class="message">{{ countMessage }}</p>
+  </div>
+
+  <script>
+    const { createApp, ref, computed, watch } = Vue
+
+    createApp({
+      setup() {
+        // 1️⃣ DATA (reactive state)
+        // Use ref() to create reactive variables
+        const count = ref(0)
+        const name = ref('')
+
+        // 2️⃣ COMPUTED
+        // Computed properties are values derived from other data.
+        // They automatically update when the data they depend on changes.
+        const countMessage = computed(() => {
+          if (count.value > 5) return "Wow, that's a high number!"
+          if (count.value < 0) return "Hey, negative numbers!"
+          return "Keep counting!"
+        })
+
+        // 3️⃣ WATCH
+        // Use watch() to perform side effects when data changes.
+        // Example: log a message every time the count changes.
+        watch(count, (newVal, oldVal) => {
+          console.log(`Count changed from ${oldVal} ➡️ ${newVal}`)
+          // You could also trigger alerts, fetch data, etc.
+        })
+
+        // Expose data and computed properties to the template
+        return { count, name, countMessage }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>
